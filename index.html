@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Life Dashboard — To-Do List</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Custom styles -->
+    <link rel="stylesheet" href="css/style.css" />
+
+    <script>
+      /* Extend Tailwind with a purple brand palette */
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              brand: {
+                50:  "#faf5ff",
+                100: "#f3e8ff",
+                200: "#e9d5ff",
+                300: "#d8b4fe",
+                400: "#c084fc",
+                500: "#a855f7",
+                600: "#9333ea",
+                700: "#7e22ce",
+                800: "#6b21a8",
+                900: "#581c87",
+              },
+            },
+            fontFamily: {
+              sans: ["Inter", "ui-sans-serif", "system-ui"],
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+
+  <body class="min-h-screen bg-brand-900 font-sans text-white">
+
+    <!-- ── Header / Greeting ──────────────────────────────────────── -->
+    <header class="w-full px-6 py-6 bg-brand-800 shadow-lg">
+      <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+
+        <!-- Clock & date -->
+        <div class="text-center sm:text-left">
+          <p id="clock" class="text-4xl font-bold tracking-wide text-brand-200">00:00:00</p>
+          <p id="date"  class="text-sm text-brand-300 mt-1">Senin, 1 Januari 2025</p>
+        </div>
+
+        <!-- Greeting & name input -->
+        <div class="text-center sm:text-right">
+          <p id="greeting" class="text-xl font-semibold text-brand-100">Halo! 👋</p>
+          <div class="mt-2 flex items-center gap-2">
+            <input
+              id="nameInput"
+              type="text"
+              placeholder="Masukkan namamu…"
+              class="rounded-lg px-3 py-1.5 text-sm bg-brand-700 border border-brand-500 placeholder-brand-400
+                     text-white focus:outline-none focus:ring-2 focus:ring-brand-400 w-44"
+            />
+            <button
+              onclick="saveName()"
+              class="px-3 py-1.5 rounded-lg bg-brand-500 hover:bg-brand-400 text-sm font-medium transition"
+            >
+              Simpan
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ── Main Grid ──────────────────────────────────────────────── -->
+    <main class="max-w-6xl mx-auto px-4 py-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+
+      <!-- ┌─ Focus Timer ──────────────────────────────────────────┐ -->
+      <section class="card col-span-1 flex flex-col gap-4">
+        <h2 class="section-title">⏱ Focus Timer</h2>
+
+        <!-- Timer display -->
+        <div class="flex flex-col items-center gap-2">
+          <div
+            id="timerDisplay"
+            class="text-6xl font-bold tracking-widest text-brand-200 tabular-nums"
+          >
+            25:00
+          </div>
+
+          <!-- Mode badges -->
+          <div class="flex gap-2 text-xs font-semibold">
+            <span id="badgeFocus" class="badge badge-active">Fokus</span>
+            <span id="badgeBreak" class="badge">Istirahat</span>
+          </div>
+        </div>
+
+        <!-- Custom duration inputs -->
+        <div class="grid grid-cols-2 gap-3 text-sm">
+          <label class="flex flex-col gap-1">
+            <span class="text-brand-300">Durasi Fokus (menit)</span>
+            <input
+              id="focusDuration"
+              type="number"
+              min="1"
+              max="120"
+              value="25"
+              class="input-field"
+            />
+          </label>
+          <label class="flex flex-col gap-1">
+            <span class="text-brand-300">Durasi Istirahat (menit)</span>
+            <input
+              id="breakDuration"
+              type="number"
+              min="1"
+              max="60"
+              value="5"
+              class="input-field"
+            />
+          </label>
+        </div>
+
+        <!-- Controls -->
+        <div class="flex gap-3 justify-center">
+          <button id="btnStart" onclick="startTimer()"  class="btn-primary">▶ Mulai</button>
+          <button id="btnPause" onclick="pauseTimer()"  class="btn-secondary" disabled>⏸ Jeda</button>
+          <button              onclick="resetTimer()"  class="btn-danger">↺ Reset</button>
+        </div>
+
+        <!-- Session count -->
+        <p class="text-center text-brand-400 text-xs">
+          Sesi selesai: <span id="sessionCount" class="font-semibold text-brand-200">0</span>
+        </p>
+      </section>
+      <!-- └────────────────────────────────────────────────────────┘ -->
+
+      <!-- ┌─ Tasks ────────────────────────────────────────────────┐ -->
+      <section class="card col-span-1 xl:col-span-2 flex flex-col gap-4">
+        <h2 class="section-title">✅ Tasks</h2>
+
+        <!-- Add task form -->
+        <form onsubmit="addTask(event)" class="flex gap-2">
+          <input
+            id="taskInput"
+            type="text"
+            placeholder="Tambah tugas baru…"
+            class="input-field flex-1"
+          />
+          <button type="submit" class="btn-primary whitespace-nowrap">+ Tambah</button>
+        </form>
+
+        <!-- Filter buttons -->
+        <div class="flex gap-2 text-xs font-medium flex-wrap">
+          <button onclick="filterTasks('all')"       class="filter-btn filter-active" id="filter-all">Semua</button>
+          <button onclick="filterTasks('active')"    class="filter-btn" id="filter-active">Aktif</button>
+          <button onclick="filterTasks('completed')" class="filter-btn" id="filter-completed">Selesai</button>
+          <button onclick="clearCompleted()" class="ml-auto filter-btn text-red-400 hover:text-red-300">
+            Hapus Selesai
+          </button>
+        </div>
+
+        <!-- Task list -->
+        <ul id="taskList" class="flex flex-col gap-2 max-h-72 overflow-y-auto pr-1 custom-scroll">
+          <!-- tasks injected by JS -->
+        </ul>
+
+        <!-- Stats -->
+        <p class="text-xs text-brand-400">
+          <span id="taskStats">0 tugas aktif</span>
+        </p>
+      </section>
+      <!-- └────────────────────────────────────────────────────────┘ -->
+
+      <!-- ┌─ Quick Links ──────────────────────────────────────────┐ -->
+      <section class="card col-span-1 md:col-span-2 xl:col-span-3 flex flex-col gap-4">
+        <h2 class="section-title">🔗 Quick Links</h2>
+
+        <!-- Add link form -->
+        <form onsubmit="addLink(event)" class="flex flex-col sm:flex-row gap-2">
+          <input
+            id="linkLabel"
+            type="text"
+            placeholder="Label (mis. GitHub)"
+            class="input-field flex-1"
+          />
+          <input
+            id="linkUrl"
+            type="url"
+            placeholder="URL (mis. https://github.com)"
+            class="input-field flex-1"
+          />
+          <button type="submit" class="btn-primary whitespace-nowrap">+ Tambah Link</button>
+        </form>
+
+        <!-- Links grid -->
+        <div
+          id="linkList"
+          class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3"
+        >
+          <!-- links injected by JS -->
+        </div>
+      </section>
+      <!-- └────────────────────────────────────────────────────────┘ -->
+
+    </main>
+
+    <!-- Toast notification -->
+    <div
+      id="toast"
+      class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-brand-600 text-white text-sm px-5 py-2.5
+             rounded-full shadow-xl opacity-0 pointer-events-none transition-opacity duration-300 z-50"
+    >
+    </div>
+
+    <!-- App script -->
+    <script src="js/script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,323 @@
+/* =========================================================
+   Life Dashboard – Custom Stylesheet
+   Tailwind utility classes are extended here with component
+   classes that are reused across index.html.
+   ========================================================= */
+
+/* ── Base ────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+  scroll-behavior: smooth;
+}
+
+/* ── Card (dashboard panel) ──────────────────────────────── */
+.card {
+  background-color: #3b0764; /* brand-900 tinted */
+  background-image: linear-gradient(135deg, #4c1d95 0%, #3b0764 100%);
+  border: 1px solid #6b21a8; /* brand-800 */
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.4),
+    0 2px 4px -2px rgba(0, 0, 0, 0.3);
+  transition: box-shadow 0.2s ease;
+}
+
+.card:hover {
+  box-shadow:
+    0 10px 15px -3px rgba(0, 0, 0, 0.5),
+    0 4px 6px -4px rgba(0, 0, 0, 0.4);
+}
+
+/* ── Section title ───────────────────────────────────────── */
+.section-title {
+  font-size: 1.125rem;  /* text-lg */
+  font-weight: 700;
+  color: #e9d5ff;       /* brand-200 */
+  letter-spacing: 0.025em;
+  border-bottom: 1px solid #6b21a8;
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+/* ── Buttons ─────────────────────────────────────────────── */
+.btn-primary {
+  padding: 0.4rem 1rem;
+  border-radius: 0.5rem;
+  background-color: #9333ea; /* brand-600 */
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.15s ease, transform 0.1s ease;
+}
+.btn-primary:hover:not(:disabled) {
+  background-color: #a855f7; /* brand-500 */
+  transform: translateY(-1px);
+}
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-secondary {
+  padding: 0.4rem 1rem;
+  border-radius: 0.5rem;
+  background-color: #4c1d95; /* brand-900 lighter */
+  color: #d8b4fe;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: 1px solid #7e22ce;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+.btn-secondary:hover:not(:disabled) {
+  background-color: #5b21b6;
+}
+.btn-secondary:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.btn-danger {
+  padding: 0.4rem 1rem;
+  border-radius: 0.5rem;
+  background-color: #7f1d1d;
+  color: #fca5a5;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: 1px solid #991b1b;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+.btn-danger:hover {
+  background-color: #991b1b;
+}
+
+/* ── Input field ─────────────────────────────────────────── */
+.input-field {
+  background-color: #4c1d95;
+  border: 1px solid #7e22ce;
+  border-radius: 0.5rem;
+  padding: 0.4rem 0.75rem;
+  color: #fff;
+  font-size: 0.875rem;
+  width: 100%;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.input-field::placeholder {
+  color: #a78bfa;
+}
+.input-field:focus {
+  border-color: #c084fc;
+  box-shadow: 0 0 0 3px rgba(192, 132, 252, 0.25);
+}
+
+/* Remove number-input spinner arrows */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* ── Badge (timer mode indicator) ───────────────────────── */
+.badge {
+  display: inline-block;
+  padding: 0.2rem 0.75rem;
+  border-radius: 9999px;
+  background-color: #4c1d95;
+  color: #c084fc;
+  border: 1px solid #6b21a8;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: background-color 0.3s, color 0.3s;
+}
+.badge-active {
+  background-color: #9333ea;
+  color: #fff;
+  border-color: #c084fc;
+}
+
+/* ── Filter buttons ──────────────────────────────────────── */
+.filter-btn {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  border: 1px solid #6b21a8;
+  background-color: transparent;
+  color: #c084fc;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s;
+}
+.filter-btn:hover {
+  background-color: #4c1d95;
+}
+.filter-active {
+  background-color: #9333ea;
+  color: #fff;
+  border-color: #c084fc;
+}
+
+/* ── Task item ───────────────────────────────────────────── */
+.task-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #4c1d95;
+  border: 1px solid #6b21a8;
+  border-radius: 0.6rem;
+  padding: 0.5rem 0.75rem;
+  transition: background-color 0.15s;
+}
+.task-item:hover {
+  background-color: #5b21b6;
+}
+
+.task-checkbox {
+  width: 1.1rem;
+  height: 1.1rem;
+  accent-color: #9333ea;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.task-text {
+  flex: 1;
+  font-size: 0.875rem;
+  color: #e9d5ff;
+  word-break: break-word;
+  transition: color 0.2s;
+}
+
+/* ── Line-through decoration for completed tasks ─────────── */
+/*
+   Required custom class per assignment spec.
+   Applied by JS when a task is marked complete.
+*/
+.line-through-decor {
+  text-decoration: line-through;
+  text-decoration-color: #a855f7;
+  text-decoration-thickness: 2px;
+  color: #7c3aed !important;
+  opacity: 0.65;
+}
+
+/* ── Task delete button ──────────────────────────────────── */
+.task-delete {
+  background: none;
+  border: none;
+  color: #7c3aed;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+  padding: 0 0.1rem;
+  flex-shrink: 0;
+  transition: color 0.15s;
+}
+.task-delete:hover {
+  color: #f87171;
+}
+
+/* ── Quick Link card ─────────────────────────────────────── */
+.link-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.75rem 0.5rem;
+  background-color: #4c1d95;
+  border: 1px solid #6b21a8;
+  border-radius: 0.75rem;
+  text-decoration: none;
+  color: #d8b4fe;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-align: center;
+  word-break: break-all;
+  transition: background-color 0.15s, transform 0.15s, border-color 0.15s;
+  overflow: hidden;
+}
+.link-card:hover {
+  background-color: #5b21b6;
+  border-color: #c084fc;
+  transform: translateY(-2px);
+  color: #fff;
+}
+.link-card .link-favicon {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  object-fit: contain;
+}
+.link-card .link-delete-btn {
+  position: absolute;
+  top: 4px;
+  right: 6px;
+  background: none;
+  border: none;
+  color: #7c3aed;
+  font-size: 0.7rem;
+  cursor: pointer;
+  line-height: 1;
+  transition: color 0.15s;
+}
+.link-card .link-delete-btn:hover {
+  color: #f87171;
+}
+
+/* ── Custom scrollbar ────────────────────────────────────── */
+.custom-scroll::-webkit-scrollbar {
+  width: 5px;
+}
+.custom-scroll::-webkit-scrollbar-track {
+  background: #3b0764;
+  border-radius: 10px;
+}
+.custom-scroll::-webkit-scrollbar-thumb {
+  background: #7e22ce;
+  border-radius: 10px;
+}
+.custom-scroll::-webkit-scrollbar-thumb:hover {
+  background: #9333ea;
+}
+
+/* ── Toast notification ──────────────────────────────────── */
+#toast.show {
+  opacity: 1 !important;
+}
+
+/* ── Timer pulse animation when running ──────────────────── */
+@keyframes pulse-ring {
+  0%   { box-shadow: 0 0 0 0 rgba(168, 85, 247, 0.5); }
+  70%  { box-shadow: 0 0 0 12px rgba(168, 85, 247, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(168, 85, 247, 0); }
+}
+#timerDisplay.running {
+  animation: pulse-ring 2s ease-out infinite;
+  border-radius: 0.5rem;
+}
+
+/* ── Responsive tweaks ───────────────────────────────────── */
+@media (max-width: 640px) {
+  .card {
+    padding: 1rem;
+  }
+  #timerDisplay {
+    font-size: 3.5rem;
+  }
+}
